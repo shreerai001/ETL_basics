@@ -1,0 +1,8 @@
+2022-02-11 15:08:24.848 | INFO     | __main__:main:28 - reading data for sales
+2022-02-11 15:08:24.851 | INFO     | read:read_table:10 - {'DB_TYPE': 'mysql', 'DB_HOST': 'localhost', 'DB_NAME': 'bhat_bhateni', 'DB_USER': 'root', 'DB_PASS': 'root'}
+2022-02-11 15:09:13.810 | INFO     | __main__:main:28 - reading data for sales
+2022-02-11 15:09:13.814 | INFO     | read:read_table:10 - {'DB_TYPE': 'mysql', 'DB_HOST': 'localhost', 'DB_NAME': 'bhat_bhateni', 'DB_USER': 'root', 'DB_PASS': 'root'}
+2022-02-11 15:11:14.021 | INFO     | __main__:main:28 - reading data for sales
+2022-02-11 15:11:14.021 | INFO     | read:read_table:10 - {'DB_TYPE': 'mysql', 'DB_HOST': 'localhost', 'DB_NAME': 'bhat_bhateni', 'DB_USER': 'root', 'DB_PASS': 'root'}
+2022-02-11 15:12:25.259 | INFO     | __main__:main:28 - reading data for sales
+2022-02-11 15:12:25.259 | INFO     | read:read_table:10 - {'DB_TYPE': 'mysql', 'DB_HOST': 'localhost', 'DB_NAME': 'bhat_bhateni', 'DB_USER': 'root', 'DB_PASS': 'root'}
