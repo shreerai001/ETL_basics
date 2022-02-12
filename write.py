@@ -1,4 +1,4 @@
-from util import get_connection
+from util import get_mysql_connection
 
 
 def build_insert_query(table_name, column_names):
@@ -25,12 +25,12 @@ def insert_data(connection, cursor, query, data, batch_size=100):
 def load_table(db_details, data, column_names, table_name):
     target_db = db_details['TARGET_DB']
 
-    connection = get_connection(db_type=target_db['DB_TYPE'],
-                                db_host=target_db['DB_HOST'],
-                                db_name=target_db['DB_NAME'],
-                                db_user=target_db['DB_USER'],
-                                db_pass=target_db['DB_PASS']
-                                )
+    connection = get_mysql_connection(db_type=target_db['DB_TYPE'],
+                                      db_host=target_db['DB_HOST'],
+                                      db_name=target_db['DB_NAME'],
+                                      db_user=target_db['DB_USER'],
+                                      db_pass=target_db['DB_PASS']
+                                      )
     cursor = connection.cursor()
     query = build_insert_query(table_name, column_names)
     print(query)
