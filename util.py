@@ -4,6 +4,7 @@ from mysql import connector as mc
 from mysql.connector import errorcode as ec
 from snowflake import connector as sc
 from const import load_operation
+import psycopg2
 
 from config import DB_DETAILS
 
@@ -56,3 +57,12 @@ def get_tables(path, table_list):
 def get_tables(path):
     tables = pd.read_csv(path, sep=':')
     return tables.query(load_operation)
+
+
+def get_pg_connection(db_host, db_name, db_user, db_pass):
+    return psycopg2.connect(f"dbname={db_name} user={db_user} host={db_host} password={db_pass}")
+
+
+def get_tables_from_text(path):
+    tables = pd.read_csv(path, sep=':')
+    return tables.query('to_be_loaded === "yes"')

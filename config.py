@@ -16,5 +16,14 @@ DB_DETAILS = {
             'DB_USER': '',
             'DB_PASS': ''
         }
+    },
+    'postgres_dev': {
+        'RETAIL_DB': {
+            'DB_TYPE': 'postgres',
+            'DB_HOST': 'localhost',
+            'DB_NAME': 'bhat_bhateni',
+            'DB_USER': 'postgres',
+            'DB_PASS': 'postgres'
+        }
     }
 }

@@ -33,9 +33,7 @@ def load_table(db_details, data, column_names, table_name):
                                       )
     cursor = connection.cursor()
     query = build_insert_query(table_name, column_names)
-    print(query)
     insert_data(connection, cursor, query, data)
-
     connection.close()
 
 
