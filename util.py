@@ -6,7 +6,7 @@ from snowflake import connector as sc
 from const import load_operation
 import psycopg2
 
-from config import DB_DETAILS
+from config.config import DB_DETAILS
 
 
 def load_db_details(env):

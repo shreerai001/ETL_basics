@@ -1,7 +1,10 @@
 import snowflake.connector as sc
 from snowflake.connector import DictCursor
+from config import snow_flake_config
 
-conn = sc.connect(user="shree", password="password", account="account")
+conn = sc.connect(user=snow_flake_config.username,
+                  password=snow_flake_config.password,
+                  account=snow_flake_config.account)
 
 
 def execute_query(connection, query):
