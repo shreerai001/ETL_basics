@@ -3,3 +3,4 @@ mysql-connector-python==8.0.28
 loguru
 snowflake-connector-python
 psycopg2-binary
+schedule
