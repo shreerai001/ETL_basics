@@ -29,7 +29,7 @@ def get_snowflake_connection(db_user, db_pass, db_acc, db_warehouse, db_database
     return connection
 
 
-def get_mysql_connection(db_type, db_host, db_name, db_user, db_pass):
+def get_mysql_connection(db_host, db_name, db_user, db_pass):
     try:
         connection = mc.connect(user=db_user,
                                 password=db_pass,

@@ -1,6 +1,8 @@
 import snowflake.connector as sc
 from snowflake.connector import DictCursor
 from config import snow_flake_config
+import util
+import pandas as pd
 
 conn = sc.connect(user=snow_flake_config.username,
                   password=snow_flake_config.password,
@@ -10,7 +12,7 @@ conn = sc.connect(user=snow_flake_config.username,
 def execute_query(connection, query):
     cursor = connection.cursor()
     cursor.execute(query)
-    cursor.close()
+    return cursor
 
 
 try:
@@ -20,6 +22,13 @@ try:
     query = 'use warehouse {}'.format("COMPUTE_WH")
     execute_query(conn, query)
 
+    conn = util.get_mysql_connection('localhost', 'bhat_bhateni', 'root', 'root')
+    cursor = conn.cursor()
+    cursor.execute("select * from country")
+    result = cursor.fetchall()
+    df = pd.DataFrame(result)
+    df = df.transform()
+    df.to_csv(r"C:\Users\shrikrishna.rai\PycharmProjects\ETL_basics\csv\sales\data-1111")
     try:
         query = 'alter warehouse {} resume'.format("COMPUTE_WH")
         execute_query(conn, query)
