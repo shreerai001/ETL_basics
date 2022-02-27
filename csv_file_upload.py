@@ -15,23 +15,26 @@ def execute_query(connection, query):
     return cursor
 
 
+def execute_query_snowflake(connection, query):
+    cursor = connection.cursor()
+    cursor.execute(query)
+    cursor.close()
+
+
 try:
     query = 'use {}'.format("BHATBHATENI")
-    execute_query(conn, query)
+    execute_query_snowflake(conn, query)
 
     query = 'use warehouse {}'.format("COMPUTE_WH")
-    execute_query(conn, query)
+    execute_query_snowflake(conn, query)
 
     conn = util.get_mysql_connection('localhost', 'bhat_bhateni', 'root', 'root')
     cursor = conn.cursor()
-    cursor.execute("select * from country")
-    result = cursor.fetchall()
-    df = pd.DataFrame(result)
-    df = df.transform()
-    df.to_csv(r"C:\Users\shrikrishna.rai\PycharmProjects\ETL_basics\csv\sales\data-1111")
+    result = pd.read_sql_query("select * from country", conn)
+    result.to_csv(r"C:\Users\shrikrishna.rai\PycharmProjects\ETL_basics\csv\sales\data-00000", index=False)
     try:
         query = 'alter warehouse {} resume'.format("COMPUTE_WH")
-        execute_query(conn, query)
+        execute_query_snowflake(conn, query)
     except Exception as e:
         print(e)
 
@@ -41,15 +44,18 @@ try:
 
     sql = "copy into {0} from @{1}/bhat_bhateni_stage/data-00000.gz FILE_FORMAT=(TYPE=csv field_delimiter='," \
           "' skip_header=0)" \
-          "ON_ERROR ='ABORT_STATEMENT'".format("transactions.sales", "BHAT_BHATENI_STAGE")
-    execute_query(conn, sql)
+          "ON_ERROR ='ABORT_STATEMENT'".format("transactions.country", "BHAT_BHATENI_STAGE")
+    execute_query_snowflake(conn, sql)
 
-    sql = 'select * from {}'.format("transactions.sales")
+    sql = 'select * from {}'.format("country")
     cursor = conn.cursor(DictCursor)
     cursor.execute(sql)
+    import ipdb
+
+    ipdb.set_trace()
     for c in cursor:
         print(c)
-    cursor.close()
+
 except Exception as e:
     print(e)
 finally:
