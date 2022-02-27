@@ -8,7 +8,7 @@ from lib.Variables import Variables
 conn = sc.connect(user=snow_flake_config.username, password=snow_flake_config.password,
                   account=snow_flake_config.account)
 variables = Variables("etc/ENV.cfg")
-variables.set("SCRIPT_NAME", "country_tgt")
+variables.set("SCRIPT_NAME", "sales_tgt")
 log = Logger(variables)
 
 
@@ -26,10 +26,13 @@ try:
     execute_query(conn, query)
 
     query = """
-            INSERT INTO bhatbhateni_tgt.country_dim
-            (country_id,country_desc,record_active)
-            select id,country_desc,1 from 
-            bhatbhateni_tmp.country
+            INSERT INTO bhatbhateni_tgt.f_sales
+            (id,store_id,product_id,customer_id,quantity,amount,discount,record_active)
+            select id,store_id,product_id,customer_id,quantity,amount,discount,1 from 
+            bhatbhateni_stg.sales
+    """
+    query = """
+            INSERT INTO bhat_bhateni_tgt.
     """
     execute_query(conn, query)
 

@@ -9,7 +9,7 @@ from lib.Variables import Variables
 conn = sc.connect(user=snow_flake_config.username, password=snow_flake_config.password,
                   account=snow_flake_config.account)
 variables = Variables("etc/ENV.cfg")
-variables.set("SCRIPT_NAME", "store")
+variables.set("SCRIPT_NAME", "sales_source")
 log = Logger(variables)
 
 
@@ -45,26 +45,20 @@ try:
         execute_query(conn, query)
     except Exception as e:
         print(e)
-    compressed_to_csv(fetch_from_source("select * from store"), variables.get("SCRIPT_NAME"))
-    csv_file = r"C:\Users\shrikrishna.rai\PycharmProjects\ETL_basics\csv\sales\store"
+    compressed_to_csv(fetch_from_source("select * from sales"), variables.get("SCRIPT_NAME"))
+    csv_file = r"C:\Users\shrikrishna.rai\PycharmProjects\ETL_basics\csv\sales\sales"
     query = 'put file://{0} @{1} auto_compress=true'.format(csv_file, "BHAT_BHATENI_STAGE")
     log.log_message("uploaded compressed file to snoflake stage")
     execute_query(conn, query)
 
     log.log_message("truncate stage table")
-    execute_query(conn, "truncate transactions.store")
+    execute_query(conn, "truncate bhatbhateni_stg.sales")
 
-    query = "copy into {0} from @{1}/store.gz FILE_FORMAT=(TYPE=csv field_delimiter='," \
+    query = "copy into {0} from @{1}/sales.gz FILE_FORMAT=(TYPE=csv field_delimiter='," \
             "' skip_header=0)" \
-            "ON_ERROR ='ABORT_STATEMENT'".format("transactions.store", "BHAT_BHATENI_STAGE")
+            "ON_ERROR ='ABORT_STATEMENT'".format("bhatbhateni_stg.sales", "BHAT_BHATENI_STAGE")
     execute_query(conn, query)
 
-    query = 'select * from {}'.format("transactions.store")
-    cursor = conn.cursor(DictCursor)
-    cursor.execute(query)
-    for c in cursor:
-        print(c)
-    cursor.close()
 except Exception as e:
     print(e)
 finally:

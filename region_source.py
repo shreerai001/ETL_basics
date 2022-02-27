@@ -9,7 +9,7 @@ from lib.Variables import Variables
 conn = sc.connect(user=snow_flake_config.username, password=snow_flake_config.password,
                   account=snow_flake_config.account)
 variables = Variables("etc/ENV.cfg")
-variables.set("SCRIPT_NAME", "region")
+variables.set("SCRIPT_NAME", "region_source")
 log = Logger(variables)
 
 
@@ -52,19 +52,13 @@ try:
     execute_query(conn, query)
 
     log.log_message("truncate stage table")
-    execute_query(conn, "truncate transactions.region")
+    execute_query(conn, "truncate bhatbhateni_stg.region")
 
     query = "copy into {0} from @{1}/region.gz FILE_FORMAT=(TYPE=csv field_delimiter='," \
             "' skip_header=0)" \
-            "ON_ERROR ='ABORT_STATEMENT'".format("transactions.region", "BHAT_BHATENI_STAGE")
+            "ON_ERROR ='ABORT_STATEMENT'".format("bhatbhateni_stg.region", "BHAT_BHATENI_STAGE")
     execute_query(conn, query)
 
-    query = 'select * from {}'.format("transactions.region")
-    cursor = conn.cursor(DictCursor)
-    cursor.execute(query)
-    for c in cursor:
-        print(c)
-    cursor.close()
 except Exception as e:
     print(e)
 finally:

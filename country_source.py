@@ -9,7 +9,7 @@ from lib.Variables import Variables
 conn = sc.connect(user=snow_flake_config.username, password=snow_flake_config.password,
                   account=snow_flake_config.account)
 variables = Variables("etc/ENV.cfg")
-variables.set("SCRIPT_NAME", "country")
+variables.set("SCRIPT_NAME", "country_source")
 log = Logger(variables)
 
 
@@ -59,12 +59,6 @@ try:
             "ON_ERROR ='ABORT_STATEMENT'".format("bhatbhateni_stg.country", "BHAT_BHATENI_STAGE")
     execute_query(conn, query)
 
-    query = 'select * from {}'.format("bhatbhateni_stg.country")
-    cursor = conn.cursor(DictCursor)
-    cursor.execute(query)
-    for c in cursor:
-        print(c)
-    cursor.close()
 except Exception as e:
     print(e)
 finally:
