@@ -11,7 +11,7 @@ from lib.DWHNightlyExtractBatch import DWHNightlyExtractBatch
 conn = sc.connect(user=snow_flake_config.username, password=snow_flake_config.password,
                   account=snow_flake_config.account)
 variables = Variables("etc/ENV.cfg")
-variables.set("SCRIPT_NAME", "country_source")
+variables.set("SCRIPT_NAME", "d_country_ex")
 variables.set("BOOKMARK", "NONE")
 log = Logger(variables)
 audit = Auditor(variables, log, None)
@@ -52,7 +52,7 @@ try:
         except Exception as e:
             print(e)
         compressed_to_csv(fetch_from_source("select * from country"), variables.get("SCRIPT_NAME"))
-        csv_file = r"C:\Users\shrikrishna.rai\PycharmProjects\ETL_basics\csv\sales\country"
+        csv_file = r".\csv\sales\country"
         query = 'put file://{0} @{1} auto_compress=true'.format(csv_file, "BHAT_BHATENI_STAGE")
         execute_query(conn, query)
         log.log_message("Extracted File Transfer to Snowflake FILE_STG is complete")

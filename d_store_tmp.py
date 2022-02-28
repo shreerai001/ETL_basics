@@ -4,11 +4,10 @@ import snowflake.connector as sc
 from config import snow_flake_config
 from snowflake.connector import DictCursor
 
-
 conn = sc.connect(user=snow_flake_config.username, password=snow_flake_config.password,
                   account=snow_flake_config.account)
 variables = Variables("etc/ENV.cfg")
-variables.set("SCRIPT_NAME", "region_tmp")
+variables.set("SCRIPT_NAME", "d_store_tmp")
 log = Logger(variables)
 
 
@@ -26,13 +25,13 @@ try:
     execute_query(conn, query)
 
     log.log_message("truncate temp table")
-    execute_query(conn, "truncate bhatbhateni_tmp.region")
+    execute_query(conn, "truncate bhatbhateni_tmp.store")
 
     query = """
-            INSERT INTO bhatbhateni_tmp.region
-            (id,region_desc,country_id)
-            select id,region_desc,country_id from 
-            bhatbhateni_stg.region
+            INSERT INTO bhatbhateni_tmp.store
+            (id,region_id,store_desc)
+            select id,region_id,store_desc from 
+            bhatbhateni_stg.store
     """
     execute_query(conn, query)
 

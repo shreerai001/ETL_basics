@@ -7,7 +7,7 @@ from lib.Variables import Variables
 conn = sc.connect(user=snow_flake_config.username, password=snow_flake_config.password,
                   account=snow_flake_config.account)
 variables = Variables("etc/ENV.cfg")
-variables.set("SCRIPT_NAME", "sales_tgt")
+variables.set("SCRIPT_NAME", "f_bhatbhateni_agg_sls_plc_month_t_ld")
 log = Logger(variables)
 
 

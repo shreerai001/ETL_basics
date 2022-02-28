@@ -1,14 +1,14 @@
+from lib.Variables import Variables
+from lib.Logger import Logger
 import snowflake.connector as sc
+from config import snow_flake_config
 from snowflake.connector import DictCursor
 
-from config import snow_flake_config
-from lib.Logger import Logger
-from lib.Variables import Variables
 
 conn = sc.connect(user=snow_flake_config.username, password=snow_flake_config.password,
                   account=snow_flake_config.account)
 variables = Variables("etc/ENV.cfg")
-variables.set("SCRIPT_NAME", "sales_tgt")
+variables.set("SCRIPT_NAME", "d_region_tmp")
 log = Logger(variables)
 
 
@@ -25,15 +25,18 @@ try:
     query = 'use warehouse {}'.format("COMPUTE_WH")
     execute_query(conn, query)
 
+    log.log_message("truncate temp table")
+    execute_query(conn, "truncate bhatbhateni_tmp.region")
+
     query = """
-            INSERT INTO bhatbhateni_tgt.f_sales
-            (id,store_id,product_id,customer_id,quantity,amount,discount,record_active)
-            select id,store_id,product_id,customer_id,quantity,amount,discount,1 from 
-            bhatbhateni_stg.sales
+            INSERT INTO bhatbhateni_tmp.region
+            (id,region_desc,country_id)
+            select id,region_desc,country_id from 
+            bhatbhateni_stg.region
     """
     execute_query(conn, query)
 
-    log.log_message("insert to target table")
+    log.log_message("insert to temp table")
 
 except Exception as e:
     print(e)
